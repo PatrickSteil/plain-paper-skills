@@ -1,0 +1,63 @@
+% paper-macros.tex -- preamble snippets for an algorithm engineering paper.
+% \input this after the document class. Remove what your class already
+% provides (LIPIcs, for example, already defines theorem environments).
+
+\usepackage{xcolor}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{booktabs}          % \toprule, \midrule, \bottomrule
+\usepackage{siunitx}           % aligned numbers, units, thin-space grouping
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}            % skip if the class defines theorems
+\usepackage{algorithm2e}       % or algorithmicx; pick one for the paper
+\usepackage[capitalise,noabbrev]{cleveref} % load last
+
+\input{assets/palette/colors}  % adjust the path to your layout
+
+% --- Algorithm and problem names ---------------------------------------------
+% One macro per name. The macro fixes the spelling and capitalization once,
+% so "RAPTOR" never becomes "Raptor" on page 7.
+\newcommand{\algname}[1]{\textsc{#1}}
+\newcommand{\Ours}{\algname{Ours}\xspace} % rename to your algorithm
+% Example: \newcommand{\Raptor}{RAPTOR\xspace}
+
+% --- Numbers -----------------------------------------------------------------
+\sisetup{
+  group-separator={\,},        % 10\,000 and 5\,132\,672
+  group-minimum-digits=4,
+  detect-weight=true,
+  round-mode=none,             % never round silently; round in the data
+}
+% Usage: \num{10000} queries, \qty{7.3}{\milli\second},
+% table columns of type S[table-format=4.1].
+
+% --- Theorem environments (skip if the class defines them) --------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Observation}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+% --- Placeholders --------------------------------------------------------------
+% Named \TODO, not \todo, to avoid a clash with the todonotes package.
+% Visible marker for anything that still needs a fact, a number, or a proof
+% step. Search for "TODO" before submission; the PDF must not contain any.
+\newcommand{\TODO}[1]{\textcolor{figWarn}{[TODO: #1]}}
+\newcommand{\GAP}[1]{\textcolor{figWarn}{[PROOF GAP: #1]}}
+
+% --- Including figures ---------------------------------------------------------
+% Every figure is built as its own standalone PDF (see assets/figures).
+% Include the same PDF you previewed:
+%   \begin{figure}[t]
+%     \centering
+%     \includegraphics{figures/build/scaling.pdf}
+%     \caption{...}
+%     \label{fig:scaling}
+%   \end{figure}
+% Do not scale figures with width=\linewidth; set the size in the figure
+% source so that the font size in the figure matches the text.

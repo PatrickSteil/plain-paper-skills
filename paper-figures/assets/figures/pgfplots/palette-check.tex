@@ -1,0 +1,25 @@
+% palette-check.tex -- shows every role with its color, marker, and dash.
+% Build it after changing the palette or the role mapping, and look at it in
+% color and in grayscale (e.g. print preview in black and white).
+\documentclass[border=2pt]{standalone}
+\input{../latex/figure-preamble}
+\input{../palette/colors}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+  width=8cm, height=5.5cm,
+  xmin=0, xmax=10, ymin=0.3, ymax=7.7,
+  ytick=\empty, xtick=\empty,
+  legend pos=outer north east,
+  title={palette: \figpalette},
+]
+  \addplot[ours,      domain=1:9, samples=9] {7};  \addlegendentry{ours}
+  \addplot[baseA,     domain=1:9, samples=9] {6};  \addlegendentry{baseA}
+  \addplot[baseB,     domain=1:9, samples=9] {5};  \addlegendentry{baseB}
+  \addplot[baseC,     domain=1:9, samples=9] {4};  \addlegendentry{baseC}
+  \addplot[baseD,     domain=1:9, samples=9] {3};  \addlegendentry{baseD}
+  \addplot[baseE,     domain=1:9, samples=9] {2};  \addlegendentry{baseE}
+  \addplot[reference, domain=1:9, samples=9] {1};  \addlegendentry{reference}
+\end{axis}
+\end{tikzpicture}
+\end{document}

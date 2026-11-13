@@ -1,0 +1,41 @@
+% query-table.tex -- results table in the style of RAPTOR, CSA, and ULTRA.
+% \input this inside the paper. Needs booktabs, siunitx, paper-macros.tex.
+% The numbers below are SYNTHETIC placeholders. Replace them.
+%
+% Rules shown:
+%  - caption above the table, self-contained: instance, query set, what each
+%    column means, what the markers mean, where numbers come from;
+%  - marker columns say which problem each row solves, so a row that solves
+%    an easier problem is visible (filled = yes, empty = no);
+%  - machine-independent counts next to times;
+%  - units in the header, decimals aligned with S columns, one precision
+%    per column;
+%  - the proposed algorithm is the last row of each block, in the same
+%    position in every table; no bold "winner" highlighting.
+\begin{table}[t]
+\caption{Query performance on \TODO{instance}, averaged over
+  \num{10000} random queries \TODO{how drawn}. Times are split into phases:
+  initialization including initial transfers (Init.), route scans (Scan), and
+  transfer relaxation (Relax). The marker columns state whether an algorithm
+  supports vertex-to-vertex queries on the full transfer graph (Full) and
+  whether it minimizes the number of transfers (Tr.): $\bullet$~yes,
+  $\circ$~no. \algname{BaseB} (marked $^*$) solves an easier problem, so its
+  times are a reference, not a competitor.}
+\label{tab:queries}
+\centering
+\small
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{@{}l cc S[table-format=2.1] S[table-format=4.0]
+                S[table-format=2.1] S[table-format=2.1] S[table-format=2.1]
+                S[table-format=2.1]@{}}
+\toprule
+ & & & \multicolumn{2}{c}{Scans [k]} & \multicolumn{4}{c}{Time [ms]} \\
+\cmidrule(lr){4-5}\cmidrule(l){6-9}
+Algorithm & Full & Tr. & {Routes} & {Edges} & {Init.} & {Scan} & {Relax} & {Total} \\
+\midrule
+\algname{BaseB}$^*$ & $\circ$   & $\bullet$ & 27.2 & 3527 &  0.0 & 10.1 &  7.8 & 17.9 \\
+\algname{BaseA}     & $\bullet$ & $\bullet$ & 34.9 &  769 & 11.6 & 14.1 & 12.3 & 38.0 \\
+\algname{Ours}      & $\bullet$ & $\bullet$ & 37.7 &  148 &  1.6 & 12.8 &  1.9 & 16.3 \\
+\bottomrule
+\end{tabular}
+\end{table}

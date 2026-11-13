@@ -1,0 +1,10 @@
+# SYNTHETIC EXAMPLE DATA. Not measurements. Replace with your own results.
+# one row per configuration; additional space in MiB, mean query time in ms
+# A baseline without preprocessing has no additional space; draw it as a
+# horizontal reference line in the plot, not as a point at x = 0 on a log axis.
+label space time
+k=16 40 2.1
+k=32 78 1.2
+k=64 150 0.75
+k=128 300 0.52
+k=256 600 0.41

@@ -1,0 +1,53 @@
+% phases.tex -- running time split into phases, one bar per algorithm.
+% Rules shown:
+%  - colors identify ALGORITHMS in this paper; phases are a different
+%    dimension, so they get neutral gray shades, not palette colors;
+%  - horizontal bars: algorithm names stay readable without rotation;
+%  - rows in the same order as in the results table (file order, top down);
+%  - the total is printed at the end of each bar, so the reader does not
+%    have to add up segments;
+%  - no 3D, no hatching unless the paper is printed in black and white.
+% If there are only a few numbers (about 20 or fewer), a table is often
+% better than this figure. See tables.md.
+\documentclass[border=2pt]{standalone}
+\input{../latex/figure-preamble}
+\input{../palette/colors}
+\pgfplotstableread[comment chars={\#}]{data/phases.dat}\phases
+% Add a total column for the labels at the bar ends.
+\pgfplotstablecreatecol[expr={\thisrow{init}+\thisrow{scan}+\thisrow{relax}}]
+  {total}{\phases}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+  xbar stacked,
+  bar width=9pt,
+  height=3.6cm,
+  xmin=0, xmax=45,
+  xlabel={mean query time [ms]},
+  ytick=data,
+  yticklabels from table={\phases}{algorithm},
+  yticklabel style={font=\small\scshape},
+  enlarge y limits=0.3,
+  y dir=reverse,     % rows top to bottom in file order = table order
+  legend style={at={(0.5,1.03)}, anchor=south, legend columns=-1,
+                /tikz/every even column/.append style={column sep=8pt}},
+  reverse legend=false,
+]
+  \addplot[draw=black!80, fill=black!10] table[x=init,  y expr=\coordindex] {\phases};
+  \addlegendentry{initialization}
+  \addplot[draw=black!80, fill=black!40] table[x=scan,  y expr=\coordindex] {\phases};
+  \addlegendentry{route scans}
+  \addplot[draw=black!80, fill=black!70] table[x=relax, y expr=\coordindex] {\phases};
+  \addlegendentry{relaxation}
+  % Totals at the bar ends. (nodes near coords would put them in the middle
+  % of the last segment in stacked plots.) Change {0,...,2} to the row count.
+  \pgfplotsinvokeforeach{0,...,2}{
+    \pgfplotstablegetelem{#1}{total}\of\phases
+    \edef\temp{\noexpand\node[anchor=west, font=\noexpand\footnotesize]
+      at (axis cs:\pgfplotsretval,#1)
+      {\noexpand\pgfmathprintnumber[fixed,zerofill,precision=1]{\pgfplotsretval}};}
+    \temp
+  }
+\end{axis}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,41 @@
+% figure-preamble.tex -- shared by every standalone figure (pgfplots and the
+% gnuplot cairolatex output), so that figure text uses the same fonts and
+% macros as the paper. Paths are relative to the figures directory, which is
+% the working directory when the figures are built.
+%
+% Change the font lines to whatever your paper class uses. If the paper uses
+% lmodern, keep lmodern here; if it uses another font package, load that one.
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
+\usepackage{amsmath,amssymb}
+% rgb: convert all colors (including the CMYK KIT colors) to RGB, so that
+% pgfplots figures show exactly the hex values used in colors.gp.
+\usepackage[rgb]{xcolor}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{plotmarks,patterns}
+
+% Algorithm names: identical macros to the paper (see paper-macros.tex).
+\providecommand{\algname}[1]{\textsc{#1}}
+
+% Default look for all pgfplots figures. Small, quiet axes; data ink first.
+\pgfplotsset{
+  every axis/.append style={
+    width=8cm, height=5cm,          % about golden ratio; override per figure
+    font=\small,
+    tick label style={font=\footnotesize},
+    label style={font=\small},
+    legend style={font=\footnotesize, draw=none, fill=none,
+                  cells={anchor=west}},
+    axis line style={black!80},
+    tick style={black!80},
+    major grid style={black!12, line width=0.3pt},
+    every axis plot/.append style={line width=0.9pt, mark size=1.6pt},
+    log basis x=2,                   % powers of two by default on log axes
+    scaled ticks=false,
+  },
+}

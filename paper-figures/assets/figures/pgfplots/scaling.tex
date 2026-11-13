@@ -1,0 +1,36 @@
+% scaling.tex -- running time as a function of input size.
+% Rules shown (Sanders, "Presenting Data from Experiments in Algorithmics"):
+%  - log x axis with powers of two, measured at powers of two;
+%  - y normalized (time per element) so the interesting part is visible,
+%    instead of a log-log plot that is close to a diagonal;
+%  - y starts at 0, so a small difference does not look like a large one;
+%  - points mark measurements, lines only connect points of one curve;
+%  - legend in the empty upper left, in the order of the curves at the
+%    right end;
+%  - the plot shows where a baseline wins (BaseB for large n). Keep that.
+% Build from the figures directory: make build/scaling.pdf
+\documentclass[border=2pt]{standalone}
+\input{../latex/figure-preamble}
+\input{../palette/colors}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+  xmode=log,
+  xlabel={input size $n$},
+  ylabel={time per element [ns]},
+  ymin=0, ymax=21,
+  xmin=2^9.5, xmax=2^24.5,
+  xtick={1024,16384,262144,4194304},
+  legend pos=north west,
+  table/col sep=space,
+]
+  % Order of \addplot = order in the legend = order at the right end.
+  \addplot[baseA] table[x=n, y=baseA, comment chars={\#}] {data/scaling.dat};
+  \addlegendentry{\algname{BaseA}}
+  \addplot[ours]  table[x=n, y=ours,  comment chars={\#}] {data/scaling.dat};
+  \addlegendentry{\algname{Ours}}
+  \addplot[baseB] table[x=n, y=baseB, comment chars={\#}] {data/scaling.dat};
+  \addlegendentry{\algname{BaseB}}
+\end{axis}
+\end{tikzpicture}
+\end{document}

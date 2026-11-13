@@ -1,0 +1,6 @@
+# SYNTHETIC EXAMPLE DATA. Not measurements. Replace with your own results.
+# mean query time per phase in ms
+algorithm init scan relax
+BaseB 0.0 10.1 7.8
+BaseA 11.6 14.1 12.3
+Ours 1.6 12.8 1.9

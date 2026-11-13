@@ -1,0 +1,42 @@
+% ranks.tex -- distribution of query times by query rank (Dijkstra rank or
+% geographic rank): queries to the 2^r-th closest vertex for each r.
+% Rules shown:
+%  - averages can hide slow queries; show the distribution per rank;
+%  - the band is the interquartile range, the thin lines are min and max.
+%    Say exactly this in the caption, with the number of queries per rank;
+%  - log y, because the range spans several orders of magnitude;
+%  - one algorithm per plot if bands would overlap; use the same axis
+%    ranges in all plots that the reader compares.
+\documentclass[border=2pt]{standalone}
+\input{../latex/figure-preamble}
+\input{../palette/colors}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+  ymode=log,
+  xlabel={rank $r$ (target is the $2^r$-th closest vertex)},
+  ylabel={query time [ms]},
+  xmin=5.5, xmax=20.5,
+  xtick={6,8,...,20},
+  xticklabels={$2^{6}$,$2^{8}$,$2^{10}$,$2^{12}$,$2^{14}$,$2^{16}$,$2^{18}$,$2^{20}$},
+  legend pos=north west,
+]
+  \addplot[name path=q1, draw=none, forget plot]
+    table[x=r, y=q1, comment chars={\#}] {data/ranks.dat};
+  \addplot[name path=q3, draw=none, forget plot]
+    table[x=r, y=q3, comment chars={\#}] {data/ranks.dat};
+  \addplot[algOurs!25, draw=none, area legend]
+    fill between[of=q1 and q3];
+  \addlegendentry{interquartile range}
+
+  \addplot[algOurs, thin, densely dotted, no markers]
+    table[x=r, y=min, comment chars={\#}] {data/ranks.dat};
+  \addlegendentry{min / max}
+  \addplot[algOurs, thin, densely dotted, no markers, forget plot]
+    table[x=r, y=max, comment chars={\#}] {data/ranks.dat};
+
+  \addplot[ours] table[x=r, y=median, comment chars={\#}] {data/ranks.dat};
+  \addlegendentry{median}
+\end{axis}
+\end{tikzpicture}
+\end{document}

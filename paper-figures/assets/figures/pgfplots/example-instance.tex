@@ -1,0 +1,36 @@
+% example-instance.tex -- a small example instance that explains one idea.
+% Rules shown:
+%  - one idea per figure, on the smallest instance that shows it;
+%  - the same palette as the plots. In a diagram, a color means one thing
+%    for the whole figure (here: blue = the path the algorithm keeps,
+%    gray dashed = what it prunes). The caption says so;
+%  - meaning is also carried by line style, not by color alone;
+%  - labels are math in the paper's notation ($s$, $t$, $v_1$, weights).
+\documentclass[border=2pt]{standalone}
+\input{../latex/figure-preamble}
+\input{../palette/colors}
+\usetikzlibrary{arrows.meta,positioning}
+\begin{document}
+\begin{tikzpicture}[
+  >={Stealth[length=5pt]},
+  vertex/.style={circle, draw=black!80, fill=white, inner sep=1.5pt,
+                 minimum size=16pt, font=\small},
+  kept/.style={->, algOurs, line width=1.1pt},
+  pruned/.style={->, figGray, densely dashed, line width=0.8pt},
+  plain/.style={->, black!70, line width=0.7pt},
+  w/.style={font=\scriptsize, fill=white, inner sep=1pt},
+]
+  \node[vertex] (s) {$s$};
+  \node[vertex, above right=6mm and 14mm of s] (a) {$v_1$};
+  \node[vertex, below right=6mm and 14mm of s] (b) {$v_2$};
+  \node[vertex, right=30mm of s] (c) {$v_3$};
+  \node[vertex, right=16mm of c] (t) {$t$};
+
+  \draw[kept]   (s) -- node[w] {2} (a);
+  \draw[kept]   (a) -- node[w] {1} (c);
+  \draw[pruned] (s) -- node[w] {2} (b);
+  \draw[pruned] (b) -- node[w] {4} (c);
+  \draw[kept]   (c) -- node[w] {3} (t);
+  \draw[plain]  (b) to[bend right=25] node[w] {9} (t);
+\end{tikzpicture}
+\end{document}

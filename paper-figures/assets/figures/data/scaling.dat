@@ -1,0 +1,11 @@
+# SYNTHETIC EXAMPLE DATA. Not measurements. Replace with your own results.
+# n: input size; columns: running time per element in ns
+n ours baseA baseB
+1024 5.50 8.50 9.50
+4096 5.80 8.90 9.60
+16384 6.10 9.30 9.70
+65536 6.40 9.70 9.80
+262144 6.70 10.10 9.90
+1048576 8.80 13.02 10.54
+4194304 10.90 15.94 11.18
+16777216 13.00 18.86 11.82

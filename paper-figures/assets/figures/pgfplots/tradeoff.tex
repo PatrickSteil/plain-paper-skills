@@ -1,0 +1,45 @@
+% tradeoff.tex -- query time against additional space, one point per
+% configuration of a parameter (here k), plus baselines.
+% Rules shown:
+%  - a parameter that trades space for time is shown as a curve of
+%    configurations, not as one hand-picked configuration;
+%  - the baseline that is FASTER than every configuration stays in the plot
+%    (BaseB here). Leaving it out would oversell the result;
+%  - a baseline without preprocessing has no additional space and cannot sit
+%    at x = 0 on a log axis; it is a horizontal reference line;
+%  - point labels sit next to the points, so no legend lookup is needed.
+\documentclass[border=2pt]{standalone}
+\input{../latex/figure-preamble}
+\input{../palette/colors}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+  xmode=log, ymode=log,
+  log basis x=10,
+  xlabel={additional space [MiB]},
+  ylabel={mean query time [ms]},
+  xmin=20, xmax=5000,
+  ymin=0.01, ymax=20,
+  clip=false,
+]
+  % Our configurations, connected because they belong to one parameter sweep.
+  \addplot[ours,
+           nodes near coords, point meta=explicit symbolic,
+           nodes near coords style={anchor=south west, font=\scriptsize,
+                                    inner sep=1.5pt, algOurs}]
+    table[x=space, y=time, meta=label, comment chars={\#}] {data/tradeoff.dat};
+
+  % A baseline with preprocessing: a single point, not connected.
+  \addplot[baseB, only marks,
+           nodes near coords, point meta=explicit symbolic,
+           nodes near coords style={anchor=east, font=\scriptsize\scshape,
+                                    inner sep=3pt, algBaseB}]
+    table[x=space, y=time, meta=label, comment chars={\#}] {data/tradeoff-baselines.dat};
+
+  % A baseline without preprocessing: reference line at its query time.
+  \addplot[baseA, no markers, domain=20:5000, samples=2] {9.5}
+    node[pos=1, anchor=north east, font=\scriptsize, algBaseA]
+      {\algname{BaseA} (no preprocessing)};
+\end{axis}
+\end{tikzpicture}
+\end{document}

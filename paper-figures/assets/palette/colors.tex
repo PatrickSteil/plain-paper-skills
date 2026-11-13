@@ -1,0 +1,115 @@
+% colors.tex -- the single color palette for a paper.
+% Load it in the paper preamble, in every pgfplots figure, and in every TikZ
+% drawing. Keep the role mapping identical to colors.gp.
+%
+% Two palettes are defined; the roles below select one of them.
+%   okabeito  Okabe & Ito, "Color Universal Design" (2008) (default).
+%             Designed for color vision deficiency; six usable line colors.
+%   kit       KIT corporate design colors. Definitions copied from
+%             the KIT Beamer template by Erik Burger and Christian Hammer
+%             (version 2.0). The four main colors (green, blue, orange, red)
+%             and black stay distinguishable under simulated protanopia,
+%             deuteranopia, and tritanopia. Roles 5 and 6 use 50% tints,
+%             which are only marginally distinguishable from roles 1 and 3:
+%             with more than four algorithms, markers and dashes carry the
+%             difference. KIT yellow is too light for lines; never use it.
+% To switch, put  \newcommand*{\figpalette}{kit}  before \input{colors},
+% or change the default below. Change it in colors.gp as well.
+%
+% Requires: \usepackage{xcolor} (and pgfplots for the styles).
+
+\providecommand*{\figpalette}{okabeito}
+
+% --- KIT corporate design (from the KIT Beamer template) ---------------------
+\definecolor{kit-green100}{rgb}{0,.59,.51}
+\definecolor{kit-green70}{rgb}{.3,.71,.65}
+\definecolor{kit-green50}{rgb}{.50,.79,.75}
+\definecolor{kit-green30}{rgb}{.69,.87,.85}
+\definecolor{kit-green15}{rgb}{.85,.93,.93}
+\definecolor{kit-blue100}{rgb}{.27,.39,.67}
+\definecolor{kit-blue70}{rgb}{.49,.57,.76}
+\definecolor{kit-blue50}{rgb}{.64,.69,.83}
+\definecolor{kit-blue30}{rgb}{.78,.82,.9}
+\definecolor{kit-blue15}{rgb}{.89,.91,.95}
+\definecolor{kit-yellow100}{cmyk}{0,.05,1,0}
+\definecolor{kit-yellow70}{cmyk}{0,.035,.7,0}
+\definecolor{kit-yellow50}{cmyk}{0,.025,.5,0}
+\definecolor{kit-yellow30}{cmyk}{0,.015,.3,0}
+\definecolor{kit-yellow15}{cmyk}{0,.0075,.15,0}
+\definecolor{kit-orange100}{cmyk}{0,.45,1,0}
+\definecolor{kit-orange70}{cmyk}{0,.315,.7,0}
+\definecolor{kit-orange50}{cmyk}{0,.225,.5,0}
+\definecolor{kit-orange30}{cmyk}{0,.135,.3,0}
+\definecolor{kit-orange15}{cmyk}{0,.0675,.15,0}
+\definecolor{kit-red100}{cmyk}{.25,1,1,0}
+\definecolor{kit-red70}{cmyk}{.175,.7,.7,0}
+\definecolor{kit-red50}{cmyk}{.125,.5,.5,0}
+\definecolor{kit-red30}{cmyk}{.075,.3,.3,0}
+\definecolor{kit-red15}{cmyk}{.0375,.15,.15,0}
+
+% --- Okabe-Ito -----------------------------------------------------------------
+\definecolor{oiBlue}{HTML}{0072B2}
+\definecolor{oiVermillion}{HTML}{D55E00}
+\definecolor{oiGreen}{HTML}{009E73}
+\definecolor{oiPurple}{HTML}{CC79A7}
+\definecolor{oiOrange}{HTML}{E69F00}
+\definecolor{oiSky}{HTML}{56B4E9}
+\definecolor{oiBlack}{HTML}{000000}
+\definecolor{oiYellow}{HTML}{F0E442} % fills only
+
+% --- Neutral colors (both palettes) -------------------------------------------
+\definecolor{figGray}{HTML}{BBBBBB}   % grid lines, pruned elements, "other"
+\colorlet{oiGray}{figGray}            % old name, kept for compatibility
+\colorlet{figWarn}{oiVermillion}      % \TODO and \GAP markers in drafts
+
+% --- Roles -----------------------------------------------------------------
+% Assign each algorithm (or variant) ONE role for the whole paper. Use the
+% role names everywhere (plots, diagrams), never the raw palette names.
+% Rename the roles to your algorithms, e.g. \colorlet{algRAPTOR}{...}.
+% Order: role 1 vs 2 is the most important pair (own algorithm vs strongest
+% baseline), so it gets the best separated colors.
+\def\figpalettekit{kit}
+\ifx\figpalette\figpalettekit
+  \colorlet{algOurs}{kit-green100}
+  \colorlet{algBaseA}{kit-red100}
+  \colorlet{algBaseB}{kit-blue100}
+  \colorlet{algBaseC}{kit-orange100}
+  \colorlet{algBaseD}{kit-blue50}
+  \colorlet{algBaseE}{kit-green50}
+\else
+  \colorlet{algOurs}{oiBlue}
+  \colorlet{algBaseA}{oiVermillion}
+  \colorlet{algBaseB}{oiGreen}
+  \colorlet{algBaseC}{oiPurple}
+  \colorlet{algBaseD}{oiOrange}
+  \colorlet{algBaseE}{oiSky}
+\fi
+\colorlet{algRef}{black}      % lower bound, reference, theory curve
+
+% --- pgfplots styles ---------------------------------------------------------
+% Defined only if pgfplots is loaded, so the paper can \input this file
+% even if it does not use pgfplots itself.
+\ifdefined\pgfplotsset
+% One style per role: color + marker + dash pattern. Each series differs in all
+% three, so plots stay readable in grayscale and for color-blind readers.
+\pgfplotsset{
+  ours/.style    ={algOurs,  mark=*,             solid,        mark options={solid}},
+  baseA/.style   ={algBaseA, mark=square*,       dashed,       mark options={solid}},
+  baseB/.style   ={algBaseB, mark=triangle*,     dotted,       mark options={solid}},
+  baseC/.style   ={algBaseC, mark=diamond*,      dashdotted,   mark options={solid}},
+  baseD/.style   ={algBaseD, mark=pentagon*,     densely dashed, mark options={solid}},
+  baseE/.style   ={algBaseE, mark=o,             loosely dashed, mark options={solid}},
+  reference/.style={algRef,  no markers,         densely dotted},
+  % Fills for bars and areas: same color, lighter, with a dark outline.
+  oursfill/.style ={draw=algOurs,  fill=algOurs!70},
+  baseAfill/.style={draw=algBaseA, fill=algBaseA!70},
+  baseBfill/.style={draw=algBaseB, fill=algBaseB!70},
+  baseCfill/.style={draw=algBaseC, fill=algBaseC!70},
+  baseDfill/.style={draw=algBaseD, fill=algBaseD!70},
+  baseEfill/.style={draw=algBaseE, fill=algBaseE!70},
+  % Default order if a plot uses plain \addplot without a style.
+  cycle list={
+    {ours},{baseA},{baseB},{baseC},{baseD},{baseE},{reference}
+  },
+}
+\fi
